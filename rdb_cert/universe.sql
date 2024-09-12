@@ -44,16 +44,19 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: aliens; Type: TABLE; Schema: public; Owner: freecodecamp
+-- Name: alien; Type: TABLE; Schema: public; Owner: freecodecamp
 --
 
-CREATE TABLE public.aliens (
+CREATE TABLE public.alien (
     alien_id integer NOT NULL,
-    name character varying(30) NOT NULL
+    name character varying(30) NOT NULL,
+    species character varying(20) NOT NULL,
+    is_hostile boolean,
+    moon_id integer
 );
 
 
-ALTER TABLE public.aliens OWNER TO freecodecamp;
+ALTER TABLE public.alien OWNER TO freecodecamp;
 
 --
 -- Name: aliens_alien_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
@@ -74,7 +77,7 @@ ALTER TABLE public.aliens_alien_id_seq OWNER TO freecodecamp;
 -- Name: aliens_alien_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
 --
 
-ALTER SEQUENCE public.aliens_alien_id_seq OWNED BY public.aliens.alien_id;
+ALTER SEQUENCE public.aliens_alien_id_seq OWNED BY public.alien.alien_id;
 
 
 --
@@ -241,10 +244,10 @@ ALTER SEQUENCE public.star_star_id_seq OWNED BY public.star.star_id;
 
 
 --
--- Name: aliens alien_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
+-- Name: alien alien_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.aliens ALTER COLUMN alien_id SET DEFAULT nextval('public.aliens_alien_id_seq'::regclass);
+ALTER TABLE ONLY public.alien ALTER COLUMN alien_id SET DEFAULT nextval('public.aliens_alien_id_seq'::regclass);
 
 
 --
@@ -276,9 +279,12 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 
 
 --
--- Data for Name: aliens; Type: TABLE DATA; Schema: public; Owner: freecodecamp
+-- Data for Name: alien; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.alien VALUES (1, 'Xorborg', 'speciatus totalus', true, 1);
+INSERT INTO public.alien VALUES (2, 'Zentark', 'Alienatus minorus', false, 2);
+INSERT INTO public.alien VALUES (3, 'Kargazguntargen', 'Specialus alientaus', true, 3);
 
 
 --
@@ -532,7 +538,7 @@ INSERT INTO public.star VALUES (103, 'Pegasus', 145035, 19, 180311.0000, 'Algedi
 -- Name: aliens_alien_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.aliens_alien_id_seq', 1, false);
+SELECT pg_catalog.setval('public.aliens_alien_id_seq', 4, true);
 
 
 --
@@ -564,11 +570,19 @@ SELECT pg_catalog.setval('public.star_star_id_seq', 103, true);
 
 
 --
--- Name: aliens aliens_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: alien aliens_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.aliens
+ALTER TABLE ONLY public.alien
     ADD CONSTRAINT aliens_name_key UNIQUE (name);
+
+
+--
+-- Name: alien aliens_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.alien
+    ADD CONSTRAINT aliens_pkey PRIMARY KEY (alien_id);
 
 
 --
@@ -641,6 +655,14 @@ ALTER TABLE ONLY public.star
 
 ALTER TABLE ONLY public.star
     ADD CONSTRAINT fk_galaxy_id FOREIGN KEY (galaxy_id) REFERENCES public.galaxy(galaxy_id);
+
+
+--
+-- Name: alien fk_moon_id; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.alien
+    ADD CONSTRAINT fk_moon_id FOREIGN KEY (moon_id) REFERENCES public.moon(moon_id);
 
 
 --
