@@ -44,6 +44,40 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: aliens; Type: TABLE; Schema: public; Owner: freecodecamp
+--
+
+CREATE TABLE public.aliens (
+    alien_id integer NOT NULL,
+    name character varying(30) NOT NULL
+);
+
+
+ALTER TABLE public.aliens OWNER TO freecodecamp;
+
+--
+-- Name: aliens_alien_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
+--
+
+CREATE SEQUENCE public.aliens_alien_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.aliens_alien_id_seq OWNER TO freecodecamp;
+
+--
+-- Name: aliens_alien_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
+--
+
+ALTER SEQUENCE public.aliens_alien_id_seq OWNED BY public.aliens.alien_id;
+
+
+--
 -- Name: galaxy; Type: TABLE; Schema: public; Owner: freecodecamp
 --
 
@@ -207,6 +241,13 @@ ALTER SEQUENCE public.star_star_id_seq OWNED BY public.star.star_id;
 
 
 --
+-- Name: aliens alien_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.aliens ALTER COLUMN alien_id SET DEFAULT nextval('public.aliens_alien_id_seq'::regclass);
+
+
+--
 -- Name: galaxy galaxy_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
@@ -232,6 +273,12 @@ ALTER TABLE ONLY public.planet ALTER COLUMN planet_id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.star_star_id_seq'::regclass);
+
+
+--
+-- Data for Name: aliens; Type: TABLE DATA; Schema: public; Owner: freecodecamp
+--
+
 
 
 --
@@ -482,6 +529,13 @@ INSERT INTO public.star VALUES (103, 'Pegasus', 145035, 19, 180311.0000, 'Algedi
 
 
 --
+-- Name: aliens_alien_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
+--
+
+SELECT pg_catalog.setval('public.aliens_alien_id_seq', 1, false);
+
+
+--
 -- Name: galaxy_galaxy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
@@ -507,6 +561,14 @@ SELECT pg_catalog.setval('public.planet_planet_id_seq', 45, true);
 --
 
 SELECT pg_catalog.setval('public.star_star_id_seq', 103, true);
+
+
+--
+-- Name: aliens aliens_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.aliens
+    ADD CONSTRAINT aliens_name_key UNIQUE (name);
 
 
 --
